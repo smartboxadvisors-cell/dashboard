@@ -3,3 +3,5 @@ node_modules
 data.txt
 echo "service-account.json" >> .gitignore
 echo ".env" >> .gitignore
+bhumit-471504-1ffbcd85a8ce.jsonservice-account.json
+.env
