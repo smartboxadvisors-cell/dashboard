@@ -9,7 +9,7 @@
   "start": "cross-env MODE=ingest node src/server.js",
   "api": "cross-env MODE=api node src/server.js",
   "api:dev": "cross-env MODE=api nodemon src/server.js",
-  "both": "cross-env MODE=both node src/server.js"
+  "both": "cross-env MODE=both nodemon src/server.js"
 },
   "keywords": [],
   "author": "",
