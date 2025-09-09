@@ -28,3 +28,4 @@ export function detectFileKind(mime, name) {
   if (mime === 'text/csv' || n.endsWith('.csv')) return 'csv';
   return 'other';
 }
+
