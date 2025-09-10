@@ -11,7 +11,7 @@ const HEADER_SYNONYMS = {
     "market value (rs. in lacs)","market/fair value"
   ],
   pct_to_nav: ["% to nav","% to nav.","percent to nav","pct to nav"],
-  ytm: ["ytm","yield","yield to maturity","yield%"]
+  ytm: ["ytm","yield","yield to maturity","yield%", "ytm~"]
 };
 
 const SECTION_ROWS = [

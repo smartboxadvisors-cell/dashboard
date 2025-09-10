@@ -1,56 +1,60 @@
-// import { MongoClient } from "mongodb";
-
-// const uri = process.env.MONGO_URI;
-// const dbName = process.env.MONGO_DB || "mutualfunds";
-// const collName = process.env.MONGO_COLLECTION || "drive_imports";
-
-// let client;
-// async function getColl() {
-//   if (!client) {
-//     client = new MongoClient(uri);
-//     await client.connect();
-//   }
-//   return client.db(dbName).collection(collName);
-// }
-
-// export default async function handler(req, res) {
-//   if (!uri) return res.status(500).json({ ok: false, error: "Missing MONGO_URI" });
-
-//   try {
-//     const coll = await getColl();
-//     const items = await coll.find({}).limit(5).toArray();
-//     res.status(200).json({ ok: true, items });
-//   } catch (err) {
-//     res.status(500).json({ ok: false, error: err.message });
-//   }
-// }
-
+// api/query.js
 import { MongoClient } from 'mongodb';
+import { log } from '../src/logger.js';
 
-// MongoDB URI from environment
-const mongoUri = process.env.MONGO_URI || 'your-mongo-uri';
+let client;
 let db;
 
-// Connect to MongoDB
 export async function connectToMongo() {
-  try {
-    const client = await MongoClient.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
-    db = client.db('mutualfunds');  // Replace with your DB name
-    console.log('Connected to MongoDB');
-  } catch (error) {
-    console.error('MongoDB connection error:', error);
-    process.exit(1);  // Exit if unable to connect
-  }
+  if (db) return db;
+  const uri = process.env.MONGO_URI;
+  const dbName = process.env.MONGO_DB;
+
+  client = new MongoClient(uri, { ignoreUndefined: true });
+  await client.connect();
+  db = client.db(dbName);
+  log.info('Connected to Mongo');
+  return db;
 }
 
-// Fetch data from the MongoDB collection
-export async function fetchDataFromMongo(collectionName) {
+/**
+ * Fetch paginated data with bulletproof integer handling.
+ * @param {string} collectionName
+ * @param {number|string} limitIn
+ * @param {number|string} skipIn
+ * @returns {{data:any[], total:number}}
+ */
+export async function fetchDataFromMongo(collectionName, limitIn = 50, skipIn = 0) {
+  if (!db) await connectToMongo();
+
+  // Coerce to safe integers with defaults and caps
+  const toInt = (v, def) => {
+    const n = Number.parseInt(v, 10);
+    return Number.isFinite(n) ? n : def;
+  };
+
+  let limit = toInt(limitIn, 50);
+  let skip  = toInt(skipIn, 0);
+
+  // guardrails
+  if (!Number.isInteger(limit) || limit < 1) limit = 50;
+  if (!Number.isInteger(skip)  || skip  < 0) skip  = 0;
+  if (limit > 1000) limit = 1000;
+
   try {
-    const collection = db.collection(collectionName); // Replace with your collection name
-    const data = await collection.find().skip().limit(limit).toArray();  // Fetch all data
-    return data;
-  } catch (error) {
-    console.error('Error fetching data:', error);
+    const col = db.collection(collectionName);
+
+    // IMPORTANT: ensure integers reach driver
+    const cursor = col.find({})
+      .skip(skip | 0)   // |0 guarantees 32-bit int
+      .limit(limit | 0);
+
+    const data = await cursor.toArray();
+    const total = await col.estimatedDocumentCount();
+
+    return { data, total };
+  } catch (err) {
+    log.error('fetchDataFromMongo error', err);
     throw new Error('Failed to fetch data from MongoDB');
   }
 }
