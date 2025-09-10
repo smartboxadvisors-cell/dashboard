@@ -1,0 +1,32 @@
+{
+  "name": "shivam",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "cross-env MODE=ingest nodemon src/server.js",
+    "start": "cross-env MODE=ingest node src/server.js",
+    "api": "cross-env MODE=api node src/server.js",
+    "api:dev": "cross-env MODE=api nodemon src/server.js",
+    "both": "cross-env MODE=both nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "googleapis": "^159.0.0",
+    "mongodb": "^6.19.0",
+    "mongoose": "^8.18.0",
+    "pino": "^9.9.4",
+    "pino-pretty": "^13.1.1",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "cross-env": "^10.0.0"
+  }
+}
