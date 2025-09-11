@@ -1,0 +1,98 @@
+.wrapper {
+  max-width: 1200px;
+  margin: 28px auto;
+  padding: 0 16px;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: #0f172a;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+}
+
+.errorBox {
+  background: #ffe9e9;
+  border: 1px solid #ffbdbd;
+  color: #7a0000;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.tableScroll { overflow: auto; }
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  font-size: 14px;
+}
+
+.thead {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  z-index: 2;
+}
+
+.th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: .2px;
+  text-transform: uppercase;
+  color: #475569;
+  padding: 12px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+}
+
+.td {
+  padding: 12px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trOdd { background: #fcfcfd; }
+
+@keyframes sk { 0% { background-position: 0 0 } 100% { background-position: 200% 0 } }
+.skeleton {
+  height: 12px;
+  width: 70%;
+  background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+  background-size: 200% 100%;
+  animation: sk 1.2s ease-in-out infinite;
+  border-radius: 6px;
+}
+.tr { transition: background .12s ease; }
+.rowHover:hover { background: #f8fafc; }
+
+/* Clamp long text by default */
+.tdClamp {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 260px; /* tweak as needed */
+}
+
+/* On row hover, unwrap to see full data clearly */
+.rowHover:hover .tdClamp {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  z-index: 1; /* keep above neighbors if needed */
+}
+
+/* Optional: slightly elevate hovered row for readability */
+.rowHover:hover {
+  position: relative;
+  outline: 1px solid #e2e8f0;
+}
