@@ -5,3 +5,6 @@ export const log = pino({
     ? { target: 'pino-pretty', options: { translateTime: 'SYS:standard', colorize: true } }
     : undefined,
 });
+export function childLogger(moduleName) {
+  return log.child({ module: moduleName });
+}

@@ -312,7 +312,7 @@ const RATING_OPTIONS = [
 
   // Generic/agency-tagged and non-rated
   'Unrated','Not Rated','NR',
-  'CRISIL AAA','[ICRA]AAA','IND AAA','CARE AAA',
+  'CRISIL AAA','[ICRA]AAA','IND AAA','CARE AAA', 'ICRA',
   'CRISIL A1+','[ICRA]A1+','IND A1+','CARE A1+',
 ];
 
